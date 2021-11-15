@@ -17,31 +17,19 @@ class AddTimeEntryWidget extends StatefulWidget {
 
 class _AddTimeEntryWidgetState extends State<AddTimeEntryWidget> {
   DateTime datePicked1;
-  TextEditingController startDateController;
+  TextEditingController startTimeController1;
   DateTime datePicked2;
-  TextEditingController startTimeController;
-  TextEditingController endDateController;
-  TextEditingController endTimeController;
+  TextEditingController startTimeController2;
   bool _loadingButton = false;
-  TextEditingController emailController;
-  TextEditingController textController6;
-  bool passwordVisibility;
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   void initState() {
     super.initState();
-    emailController = TextEditingController(text: 'smoder78@gmail.com');
-    textController6 = TextEditingController(text: '123456');
-    passwordVisibility = false;
-    endDateController = TextEditingController(
-        text: dateTimeFormat('d/M/y', getCurrentTimestamp));
-    endTimeController =
-        TextEditingController(text: dateTimeFormat('Hm', getCurrentTimestamp));
-    startDateController = TextEditingController(
-        text: dateTimeFormat('d/M/y', getCurrentTimestamp));
-    startTimeController =
-        TextEditingController(text: dateTimeFormat('Hm', getCurrentTimestamp));
+    startTimeController1 = TextEditingController(
+        text: dateTimeFormat('M/d h:m a', getCurrentTimestamp));
+    startTimeController2 = TextEditingController(
+        text: dateTimeFormat('M/d h:m a', getCurrentTimestamp));
   }
 
   @override
@@ -82,58 +70,69 @@ class _AddTimeEntryWidgetState extends State<AddTimeEntryWidget> {
                       mainAxisSize: MainAxisSize.max,
                       children: [
                         Expanded(
-                          child: Container(
-                            width: 150,
-                            height: 60,
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(8),
-                              border: Border.all(
-                                color: Color(0xFFE6E6E6),
-                              ),
-                            ),
-                            child: Padding(
-                              padding:
-                                  EdgeInsetsDirectional.fromSTEB(16, 0, 0, 0),
-                              child: TextFormField(
-                                onFieldSubmitted: (_) async {
-                                  await DatePicker.showDatePicker(
-                                    context,
-                                    showTitleActions: true,
-                                    onConfirm: (date) {
-                                      setState(() => datePicked1 = date);
-                                    },
-                                    currentTime: getCurrentTimestamp,
-                                  );
+                          child: InkWell(
+                            onTap: () async {
+                              await DatePicker.showDatePicker(
+                                context,
+                                showTitleActions: true,
+                                onConfirm: (date) {
+                                  setState(() => datePicked1 = date);
                                 },
-                                controller: startDateController,
-                                obscureText: false,
-                                decoration: InputDecoration(
-                                  labelText: 'Start Date',
-                                  labelStyle: FlutterFlowTheme.bodyText1,
-                                  enabledBorder: UnderlineInputBorder(
-                                    borderSide: BorderSide(
-                                      color: Color(0x00000000),
-                                      width: 1,
-                                    ),
-                                    borderRadius: const BorderRadius.only(
-                                      topLeft: Radius.circular(4.0),
-                                      topRight: Radius.circular(4.0),
-                                    ),
-                                  ),
-                                  focusedBorder: UnderlineInputBorder(
-                                    borderSide: BorderSide(
-                                      color: Color(0x00000000),
-                                      width: 1,
-                                    ),
-                                    borderRadius: const BorderRadius.only(
-                                      topLeft: Radius.circular(4.0),
-                                      topRight: Radius.circular(4.0),
-                                    ),
-                                  ),
+                                currentTime: getCurrentTimestamp,
+                              );
+                            },
+                            child: Container(
+                              width: 150,
+                              height: 60,
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(8),
+                                border: Border.all(
+                                  color: Color(0xFFE6E6E6),
                                 ),
-                                style: FlutterFlowTheme.bodyText1,
-                                keyboardType: TextInputType.datetime,
+                              ),
+                              child: Padding(
+                                padding:
+                                    EdgeInsetsDirectional.fromSTEB(16, 0, 0, 0),
+                                child: TextFormField(
+                                  controller: startTimeController1,
+                                  obscureText: false,
+                                  decoration: InputDecoration(
+                                    labelText: 'Start Time',
+                                    labelStyle:
+                                        FlutterFlowTheme.bodyText1.override(
+                                      fontFamily: 'Arimo',
+                                      color: FlutterFlowTheme.dkBlue,
+                                      fontSize: 18,
+                                    ),
+                                    enabledBorder: UnderlineInputBorder(
+                                      borderSide: BorderSide(
+                                        color: Color(0x00000000),
+                                        width: 1,
+                                      ),
+                                      borderRadius: const BorderRadius.only(
+                                        topLeft: Radius.circular(4.0),
+                                        topRight: Radius.circular(4.0),
+                                      ),
+                                    ),
+                                    focusedBorder: UnderlineInputBorder(
+                                      borderSide: BorderSide(
+                                        color: Color(0x00000000),
+                                        width: 1,
+                                      ),
+                                      borderRadius: const BorderRadius.only(
+                                        topLeft: Radius.circular(4.0),
+                                        topRight: Radius.circular(4.0),
+                                      ),
+                                    ),
+                                  ),
+                                  style: FlutterFlowTheme.bodyText1.override(
+                                    fontFamily: 'Arimo',
+                                    color: FlutterFlowTheme.dkBlue,
+                                    fontSize: 20,
+                                  ),
+                                  keyboardType: TextInputType.number,
+                                ),
                               ),
                             ),
                           ),
@@ -160,115 +159,19 @@ class _AddTimeEntryWidgetState extends State<AddTimeEntryWidget> {
                                     onConfirm: (date) {
                                       setState(() => datePicked2 = date);
                                     },
-                                    currentTime: getCurrentTimestamp,
+                                    currentTime: datePicked2,
                                   );
                                 },
-                                controller: startTimeController,
-                                obscureText: false,
-                                decoration: InputDecoration(
-                                  labelText: 'Start Time',
-                                  labelStyle: FlutterFlowTheme.bodyText1,
-                                  enabledBorder: UnderlineInputBorder(
-                                    borderSide: BorderSide(
-                                      color: Color(0x00000000),
-                                      width: 1,
-                                    ),
-                                    borderRadius: const BorderRadius.only(
-                                      topLeft: Radius.circular(4.0),
-                                      topRight: Radius.circular(4.0),
-                                    ),
-                                  ),
-                                  focusedBorder: UnderlineInputBorder(
-                                    borderSide: BorderSide(
-                                      color: Color(0x00000000),
-                                      width: 1,
-                                    ),
-                                    borderRadius: const BorderRadius.only(
-                                      topLeft: Radius.circular(4.0),
-                                      topRight: Radius.circular(4.0),
-                                    ),
-                                  ),
-                                ),
-                                style: FlutterFlowTheme.bodyText1,
-                              ),
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsetsDirectional.fromSTEB(0, 12, 0, 0),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.max,
-                      children: [
-                        Expanded(
-                          child: Container(
-                            width: 150,
-                            height: 60,
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(8),
-                              border: Border.all(
-                                color: Color(0xFFE6E6E6),
-                              ),
-                            ),
-                            child: Padding(
-                              padding:
-                                  EdgeInsetsDirectional.fromSTEB(16, 0, 0, 0),
-                              child: TextFormField(
-                                controller: endDateController,
-                                obscureText: false,
-                                decoration: InputDecoration(
-                                  labelText: 'End Date',
-                                  labelStyle: FlutterFlowTheme.bodyText1,
-                                  enabledBorder: UnderlineInputBorder(
-                                    borderSide: BorderSide(
-                                      color: Color(0x00000000),
-                                      width: 1,
-                                    ),
-                                    borderRadius: const BorderRadius.only(
-                                      topLeft: Radius.circular(4.0),
-                                      topRight: Radius.circular(4.0),
-                                    ),
-                                  ),
-                                  focusedBorder: UnderlineInputBorder(
-                                    borderSide: BorderSide(
-                                      color: Color(0x00000000),
-                                      width: 1,
-                                    ),
-                                    borderRadius: const BorderRadius.only(
-                                      topLeft: Radius.circular(4.0),
-                                      topRight: Radius.circular(4.0),
-                                    ),
-                                  ),
-                                ),
-                                style: FlutterFlowTheme.bodyText1,
-                                keyboardType: TextInputType.datetime,
-                              ),
-                            ),
-                          ),
-                        ),
-                        Expanded(
-                          child: Container(
-                            width: 150,
-                            height: 60,
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(8),
-                              border: Border.all(
-                                color: Color(0xFFE6E6E6),
-                              ),
-                            ),
-                            child: Padding(
-                              padding:
-                                  EdgeInsetsDirectional.fromSTEB(16, 0, 0, 0),
-                              child: TextFormField(
-                                controller: endTimeController,
+                                controller: startTimeController2,
                                 obscureText: false,
                                 decoration: InputDecoration(
                                   labelText: 'End Time',
-                                  labelStyle: FlutterFlowTheme.bodyText1,
+                                  labelStyle:
+                                      FlutterFlowTheme.bodyText1.override(
+                                    fontFamily: 'Arimo',
+                                    color: FlutterFlowTheme.dkBlue,
+                                    fontSize: 18,
+                                  ),
                                   enabledBorder: UnderlineInputBorder(
                                     borderSide: BorderSide(
                                       color: Color(0x00000000),
@@ -290,7 +193,12 @@ class _AddTimeEntryWidgetState extends State<AddTimeEntryWidget> {
                                     ),
                                   ),
                                 ),
-                                style: FlutterFlowTheme.bodyText1,
+                                style: FlutterFlowTheme.bodyText1.override(
+                                  fontFamily: 'Arimo',
+                                  color: FlutterFlowTheme.dkBlue,
+                                  fontSize: 20,
+                                ),
+                                keyboardType: TextInputType.number,
                               ),
                             ),
                           ),
@@ -308,10 +216,8 @@ class _AddTimeEntryWidgetState extends State<AddTimeEntryWidget> {
                           try {
                             final clockinoutLogsCreateData =
                                 createClockinoutLogsRecordData(
-                              employeeName: 'Seth',
                               clockin: datePicked1,
                               clockout: datePicked2,
-                              email: currentUserEmail,
                             );
                             await ClockinoutLogsRecord.collection
                                 .doc()
@@ -320,7 +226,7 @@ class _AddTimeEntryWidgetState extends State<AddTimeEntryWidget> {
                             setState(() => _loadingButton = false);
                           }
                         },
-                        text: 'Continue',
+                        text: 'Add Entry',
                         options: FFButtonOptions(
                           width: 140,
                           height: 60,
@@ -345,166 +251,48 @@ class _AddTimeEntryWidgetState extends State<AddTimeEntryWidget> {
                 ],
               ),
             ),
-            Padding(
-              padding: EdgeInsetsDirectional.fromSTEB(20, 0, 20, 0),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
+            Expanded(
+              child: ListView(
+                padding: EdgeInsets.zero,
+                scrollDirection: Axis.vertical,
                 children: [
-                  Padding(
-                    padding: EdgeInsetsDirectional.fromSTEB(0, 16, 0, 0),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.max,
-                      children: [
-                        Text(
-                          'Login Creds',
-                          style: FlutterFlowTheme.bodyText1.override(
-                            fontFamily: 'Montserrat',
-                            color: Color(0xFF0D1724),
-                            fontWeight: FontWeight.w500,
-                          ),
-                        )
-                      ],
+                  Container(
+                    width: 100,
+                    height: 100,
+                    decoration: BoxDecoration(
+                      color: Color(0xFFEEEEEE),
                     ),
-                  ),
-                  Padding(
-                    padding: EdgeInsetsDirectional.fromSTEB(0, 12, 0, 0),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.max,
-                      children: [
-                        Expanded(
-                          child: Container(
-                            width: 330,
-                            height: 60,
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(8),
-                              border: Border.all(
-                                color: Color(0xFFE6E6E6),
+                    child: StreamBuilder<List<ClockinoutLogsRecord>>(
+                      stream: queryClockinoutLogsRecord(),
+                      builder: (context, snapshot) {
+                        // Customize what your widget looks like when it's loading.
+                        if (!snapshot.hasData) {
+                          return Center(
+                            child: SizedBox(
+                              width: 50,
+                              height: 50,
+                              child: CircularProgressIndicator(
+                                color: FlutterFlowTheme.primaryColor,
                               ),
                             ),
-                            child: Padding(
-                              padding:
-                                  EdgeInsetsDirectional.fromSTEB(16, 0, 0, 0),
-                              child: TextFormField(
-                                controller: emailController,
-                                obscureText: false,
-                                decoration: InputDecoration(
-                                  labelText: 'email',
-                                  labelStyle:
-                                      FlutterFlowTheme.bodyText2.override(
-                                    fontFamily: 'Montserrat',
-                                    color: Color(0xFF8B97A2),
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                  enabledBorder: UnderlineInputBorder(
-                                    borderSide: BorderSide(
-                                      color: Color(0x00000000),
-                                      width: 1,
-                                    ),
-                                    borderRadius: const BorderRadius.only(
-                                      topLeft: Radius.circular(4.0),
-                                      topRight: Radius.circular(4.0),
-                                    ),
-                                  ),
-                                  focusedBorder: UnderlineInputBorder(
-                                    borderSide: BorderSide(
-                                      color: Color(0x00000000),
-                                      width: 1,
-                                    ),
-                                    borderRadius: const BorderRadius.only(
-                                      topLeft: Radius.circular(4.0),
-                                      topRight: Radius.circular(4.0),
-                                    ),
-                                  ),
-                                ),
-                                style: FlutterFlowTheme.bodyText2.override(
-                                  fontFamily: 'Montserrat',
-                                  color: Color(0xFF8B97A2),
-                                  fontWeight: FontWeight.w500,
-                                ),
-                                keyboardType: TextInputType.emailAddress,
-                              ),
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsetsDirectional.fromSTEB(0, 12, 0, 0),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.max,
-                      children: [
-                        Expanded(
-                          child: Container(
-                            width: 330,
-                            height: 60,
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(8),
-                              border: Border.all(
-                                color: Color(0xFFE6E6E6),
-                              ),
-                            ),
-                            child: Padding(
-                              padding:
-                                  EdgeInsetsDirectional.fromSTEB(16, 0, 0, 0),
-                              child: TextFormField(
-                                controller: textController6,
-                                obscureText: !passwordVisibility,
-                                decoration: InputDecoration(
-                                  labelText: 'password',
-                                  labelStyle:
-                                      FlutterFlowTheme.bodyText2.override(
-                                    fontFamily: 'Montserrat',
-                                    color: Color(0xFF8B97A2),
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                  enabledBorder: UnderlineInputBorder(
-                                    borderSide: BorderSide(
-                                      color: Color(0x00000000),
-                                      width: 1,
-                                    ),
-                                    borderRadius: const BorderRadius.only(
-                                      topLeft: Radius.circular(4.0),
-                                      topRight: Radius.circular(4.0),
-                                    ),
-                                  ),
-                                  focusedBorder: UnderlineInputBorder(
-                                    borderSide: BorderSide(
-                                      color: Color(0x00000000),
-                                      width: 1,
-                                    ),
-                                    borderRadius: const BorderRadius.only(
-                                      topLeft: Radius.circular(4.0),
-                                      topRight: Radius.circular(4.0),
-                                    ),
-                                  ),
-                                  suffixIcon: InkWell(
-                                    onTap: () => setState(
-                                      () => passwordVisibility =
-                                          !passwordVisibility,
-                                    ),
-                                    child: Icon(
-                                      passwordVisibility
-                                          ? Icons.visibility_outlined
-                                          : Icons.visibility_off_outlined,
-                                      size: 22,
-                                    ),
-                                  ),
-                                ),
-                                style: FlutterFlowTheme.bodyText2.override(
-                                  fontFamily: 'Montserrat',
-                                  color: Color(0xFF8B97A2),
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                            ),
-                          ),
-                        )
-                      ],
+                          );
+                        }
+                        List<ClockinoutLogsRecord> rowClockinoutLogsRecordList =
+                            snapshot.data;
+                        return Row(
+                          mainAxisSize: MainAxisSize.max,
+                          children: List.generate(
+                              rowClockinoutLogsRecordList.length, (rowIndex) {
+                            final rowClockinoutLogsRecord =
+                                rowClockinoutLogsRecordList[rowIndex];
+                            return Text(
+                              dateTimeFormat(
+                                  'MEd', rowClockinoutLogsRecord.clockin),
+                              style: FlutterFlowTheme.bodyText1,
+                            );
+                          }),
+                        );
+                      },
                     ),
                   )
                 ],
