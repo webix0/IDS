@@ -1,0 +1,18 @@
+{
+  "indexes": [
+    {
+      "collectionGroup": "clockinout_logs",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "phone_number",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "clockin",
+          "order": "DESCENDING"
+        }
+      ]
+    }
+  ]
+}
