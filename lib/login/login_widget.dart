@@ -26,8 +26,8 @@ class _LoginWidgetState extends State<LoginWidget> {
   @override
   void initState() {
     super.initState();
-    emailAddressController = TextEditingController();
-    passwordController = TextEditingController();
+    emailAddressController = TextEditingController(text: 'smoder78@gmail.com');
+    passwordController = TextEditingController(text: '123456');
     passwordVisibility = false;
   }
 

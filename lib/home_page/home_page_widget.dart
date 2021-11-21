@@ -16,6 +16,7 @@ class HomePageWidget extends StatefulWidget {
 class _HomePageWidgetState extends State<HomePageWidget> {
   bool _loadingButton1 = false;
   bool _loadingButton2 = false;
+  bool _loadingButton3 = false;
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
@@ -95,6 +96,43 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                     borderRadius: 12,
                   ),
                   loading: _loadingButton2,
+                ),
+              ),
+            ),
+            Align(
+              alignment: AlignmentDirectional(0.05, 0),
+              child: Padding(
+                padding: EdgeInsetsDirectional.fromSTEB(0, 30, 0, 0),
+                child: FFButtonWidget(
+                  onPressed: () async {
+                    setState(() => _loadingButton3 = true);
+                    try {
+                      await Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => AddTimeEntryWidget(),
+                        ),
+                      );
+                    } finally {
+                      setState(() => _loadingButton3 = false);
+                    }
+                  },
+                  text: 'Add Time Entry',
+                  options: FFButtonOptions(
+                    width: 130,
+                    height: 40,
+                    color: FlutterFlowTheme.primaryColor,
+                    textStyle: FlutterFlowTheme.subtitle2.override(
+                      fontFamily: 'Arimo',
+                      color: Colors.white,
+                    ),
+                    borderSide: BorderSide(
+                      color: Colors.transparent,
+                      width: 1,
+                    ),
+                    borderRadius: 12,
+                  ),
+                  loading: _loadingButton3,
                 ),
               ),
             )
