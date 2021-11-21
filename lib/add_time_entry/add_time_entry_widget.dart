@@ -20,7 +20,6 @@ class _AddTimeEntryWidgetState extends State<AddTimeEntryWidget>
     with TickerProviderStateMixin {
   DateTime datePicked1;
   DateTime datePicked2;
-  DateTime datePicked3;
   bool _loadingButton = false;
   final scaffoldKey = GlobalKey<ScaffoldState>();
   final animationsMap = {
@@ -98,50 +97,12 @@ class _AddTimeEntryWidgetState extends State<AddTimeEntryWidget>
                                 Padding(
                                   padding: EdgeInsetsDirectional.fromSTEB(
                                       0, 20, 0, 0),
-                                  child: InkWell(
-                                    onTap: () async {
-                                      await DatePicker.showDateTimePicker(
-                                        context,
-                                        showTitleActions: true,
-                                        onConfirm: (date) {
-                                          setState(() => datePicked1 = date);
-                                        },
-                                        currentTime: getCurrentTimestamp,
-                                      );
-                                    },
-                                    child: Text(
-                                      dateTimeFormat('M/d h:m a', datePicked2),
-                                      style:
-                                          FlutterFlowTheme.bodyText1.override(
-                                        fontFamily: 'Arimo',
-                                        color: FlutterFlowTheme.blue,
-                                        fontSize: 20,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                Padding(
-                                  padding: EdgeInsetsDirectional.fromSTEB(
-                                      0, 20, 0, 0),
-                                  child: InkWell(
-                                    onTap: () async {
-                                      await DatePicker.showDateTimePicker(
-                                        context,
-                                        showTitleActions: true,
-                                        onConfirm: (date) {
-                                          setState(() => datePicked2 = date);
-                                        },
-                                        currentTime: getCurrentTimestamp,
-                                      );
-                                    },
-                                    child: Text(
-                                      'Change Start',
-                                      style:
-                                          FlutterFlowTheme.bodyText1.override(
-                                        fontFamily: 'Arimo',
-                                        color: FlutterFlowTheme.blue,
-                                        fontSize: 20,
-                                      ),
+                                  child: Text(
+                                    dateTimeFormat('M/d h:m a', datePicked2),
+                                    style: FlutterFlowTheme.bodyText1.override(
+                                      fontFamily: 'Arimo',
+                                      color: FlutterFlowTheme.blue,
+                                      fontSize: 20,
                                     ),
                                   ),
                                 )
@@ -171,7 +132,7 @@ class _AddTimeEntryWidgetState extends State<AddTimeEntryWidget>
                                     context,
                                     showTitleActions: true,
                                     onConfirm: (date) {
-                                      setState(() => datePicked3 = date);
+                                      setState(() => datePicked1 = date);
                                     },
                                     currentTime: getCurrentTimestamp,
                                     minTime: getCurrentTimestamp,
@@ -190,6 +151,39 @@ class _AddTimeEntryWidgetState extends State<AddTimeEntryWidget>
                       ],
                     ),
                   ),
+                  Padding(
+                    padding: EdgeInsetsDirectional.fromSTEB(20, 20, 20, 0),
+                    child: Container(
+                      width: MediaQuery.of(context).size.width * 0.5,
+                      height: 40,
+                      decoration: BoxDecoration(
+                        color: Color(0xFFEEEEEE),
+                      ),
+                      child: Padding(
+                        padding: EdgeInsetsDirectional.fromSTEB(0, 20, 0, 0),
+                        child: InkWell(
+                          onTap: () async {
+                            await DatePicker.showDateTimePicker(
+                              context,
+                              showTitleActions: true,
+                              onConfirm: (date) {
+                                setState(() => datePicked2 = date);
+                              },
+                              currentTime: getCurrentTimestamp,
+                            );
+                          },
+                          child: Text(
+                            'Change Start',
+                            style: FlutterFlowTheme.bodyText1.override(
+                              fontFamily: 'Arimo',
+                              color: FlutterFlowTheme.blue,
+                              fontSize: 20,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
                   Align(
                     alignment: AlignmentDirectional(0.95, 0),
                     child: Padding(
@@ -200,8 +194,8 @@ class _AddTimeEntryWidgetState extends State<AddTimeEntryWidget>
                           try {
                             final clockinoutLogsCreateData =
                                 createClockinoutLogsRecordData(
-                              clockin: datePicked1,
-                              clockout: datePicked3,
+                              clockin: datePicked2,
+                              clockout: datePicked1,
                               createdTime: getCurrentTimestamp,
                             );
                             await ClockinoutLogsRecord.collection
@@ -238,7 +232,10 @@ class _AddTimeEntryWidgetState extends State<AddTimeEntryWidget>
             ),
             Expanded(
               child: StreamBuilder<List<ClockinoutLogsRecord>>(
-                stream: queryClockinoutLogsRecord(),
+                stream: queryClockinoutLogsRecord(
+                  queryBuilder: (clockinoutLogsRecord) =>
+                      clockinoutLogsRecord.orderBy('clockin'),
+                ),
                 builder: (context, snapshot) {
                   // Customize what your widget looks like when it's loading.
                   if (!snapshot.hasData) {
@@ -261,229 +258,195 @@ class _AddTimeEntryWidgetState extends State<AddTimeEntryWidget>
                     itemBuilder: (context, listViewIndex) {
                       final listViewClockinoutLogsRecord =
                           listViewClockinoutLogsRecordList[listViewIndex];
-                      return Container(
-                        width: 100,
-                        height: 70,
-                        decoration: BoxDecoration(
-                          color: Color(0xFFEEEEEE),
-                        ),
-                        child: Padding(
-                          padding: EdgeInsetsDirectional.fromSTEB(20, 0, 0, 0),
-                          child: Container(
-                            width: 60,
-                            child: Stack(
-                              children: [
-                                Padding(
-                                  padding: EdgeInsetsDirectional.fromSTEB(
-                                      0, 10, 0, 0),
-                                  child:
-                                      StreamBuilder<List<ClockinoutLogsRecord>>(
-                                    stream: queryClockinoutLogsRecord(
-                                      singleRecord: true,
+                      return Padding(
+                        padding: EdgeInsetsDirectional.fromSTEB(0, 10, 0, 0),
+                        child: Container(
+                          width: 100,
+                          height: 60,
+                          decoration: BoxDecoration(
+                            color: Color(0xFFEEEEEE),
+                          ),
+                          child: Padding(
+                            padding:
+                                EdgeInsetsDirectional.fromSTEB(20, 0, 0, 0),
+                            child: Container(
+                              width: 60,
+                              child: Stack(
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        0, 10, 0, 0),
+                                    child: StreamBuilder<
+                                        List<ClockinoutLogsRecord>>(
+                                      stream: queryClockinoutLogsRecord(),
+                                      builder: (context, snapshot) {
+                                        // Customize what your widget looks like when it's loading.
+                                        if (!snapshot.hasData) {
+                                          return Center(
+                                            child: SizedBox(
+                                              width: 50,
+                                              height: 50,
+                                              child: CircularProgressIndicator(
+                                                color: FlutterFlowTheme
+                                                    .primaryColor,
+                                              ),
+                                            ),
+                                          );
+                                        }
+                                        List<ClockinoutLogsRecord>
+                                            dayClockinoutLogsRecordList =
+                                            snapshot.data;
+                                        return Text(
+                                          dateTimeFormat(
+                                              'EEEE',
+                                              listViewClockinoutLogsRecord
+                                                  .clockin),
+                                          style: FlutterFlowTheme.bodyText1,
+                                        );
+                                      },
                                     ),
-                                    builder: (context, snapshot) {
-                                      // Customize what your widget looks like when it's loading.
-                                      if (!snapshot.hasData) {
-                                        return Center(
-                                          child: SizedBox(
-                                            width: 50,
-                                            height: 50,
-                                            child: CircularProgressIndicator(
-                                              color:
-                                                  FlutterFlowTheme.primaryColor,
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        0, 25, 0, 0),
+                                    child: StreamBuilder<
+                                        List<ClockinoutLogsRecord>>(
+                                      stream: queryClockinoutLogsRecord(),
+                                      builder: (context, snapshot) {
+                                        // Customize what your widget looks like when it's loading.
+                                        if (!snapshot.hasData) {
+                                          return Center(
+                                            child: SizedBox(
+                                              width: 50,
+                                              height: 50,
+                                              child: CircularProgressIndicator(
+                                                color: FlutterFlowTheme
+                                                    .primaryColor,
+                                              ),
+                                            ),
+                                          );
+                                        }
+                                        List<ClockinoutLogsRecord>
+                                            textClockinoutLogsRecordList =
+                                            snapshot.data;
+                                        return Text(
+                                          dateTimeFormat(
+                                              'Md',
+                                              listViewClockinoutLogsRecord
+                                                  .clockin),
+                                          style: FlutterFlowTheme.bodyText1,
+                                        );
+                                      },
+                                    ),
+                                  ),
+                                  Align(
+                                    alignment: AlignmentDirectional(1, 0),
+                                    child: Container(
+                                      width: MediaQuery.of(context).size.width *
+                                          0.8,
+                                      height: 60,
+                                      decoration: BoxDecoration(
+                                        color: FlutterFlowTheme.dkGray,
+                                        borderRadius: BorderRadius.only(
+                                          bottomLeft: Radius.circular(30),
+                                          bottomRight: Radius.circular(0),
+                                          topLeft: Radius.circular(30),
+                                          topRight: Radius.circular(0),
+                                        ),
+                                      ),
+                                      child: Stack(
+                                        children: [
+                                          Padding(
+                                            padding:
+                                                EdgeInsetsDirectional.fromSTEB(
+                                                    20, 20, 0, 0),
+                                            child: StreamBuilder<
+                                                List<ClockinoutLogsRecord>>(
+                                              stream:
+                                                  queryClockinoutLogsRecord(),
+                                              builder: (context, snapshot) {
+                                                // Customize what your widget looks like when it's loading.
+                                                if (!snapshot.hasData) {
+                                                  return Center(
+                                                    child: SizedBox(
+                                                      width: 50,
+                                                      height: 50,
+                                                      child:
+                                                          CircularProgressIndicator(
+                                                        color: FlutterFlowTheme
+                                                            .primaryColor,
+                                                      ),
+                                                    ),
+                                                  );
+                                                }
+                                                List<ClockinoutLogsRecord>
+                                                    textClockinoutLogsRecordList =
+                                                    snapshot.data;
+                                                return Text(
+                                                  dateTimeFormat(
+                                                      'jm',
+                                                      listViewClockinoutLogsRecord
+                                                          .clockin),
+                                                  style: FlutterFlowTheme
+                                                      .bodyText1
+                                                      .override(
+                                                    fontFamily: 'Arimo',
+                                                    color: FlutterFlowTheme
+                                                        .tertiaryColor,
+                                                  ),
+                                                );
+                                              },
                                             ),
                                           ),
-                                        );
-                                      }
-                                      List<ClockinoutLogsRecord>
-                                          dayClockinoutLogsRecordList =
-                                          snapshot.data;
-                                      // Return an empty Container when the document does not exist.
-                                      if (snapshot.data.isEmpty) {
-                                        return Container();
-                                      }
-                                      final dayClockinoutLogsRecord =
-                                          dayClockinoutLogsRecordList.isNotEmpty
-                                              ? dayClockinoutLogsRecordList
-                                                  .first
-                                              : null;
-                                      return Text(
-                                        dateTimeFormat('EEEE',
-                                            dayClockinoutLogsRecord.clockin),
-                                        style: FlutterFlowTheme.bodyText1,
-                                      );
-                                    },
-                                  ),
-                                ),
-                                Padding(
-                                  padding: EdgeInsetsDirectional.fromSTEB(
-                                      0, 25, 0, 0),
-                                  child:
-                                      StreamBuilder<List<ClockinoutLogsRecord>>(
-                                    stream: queryClockinoutLogsRecord(
-                                      singleRecord: true,
-                                    ),
-                                    builder: (context, snapshot) {
-                                      // Customize what your widget looks like when it's loading.
-                                      if (!snapshot.hasData) {
-                                        return Center(
-                                          child: SizedBox(
-                                            width: 50,
-                                            height: 50,
-                                            child: CircularProgressIndicator(
-                                              color:
-                                                  FlutterFlowTheme.primaryColor,
+                                          Padding(
+                                            padding:
+                                                EdgeInsetsDirectional.fromSTEB(
+                                                    200, 20, 0, 0),
+                                            child: StreamBuilder<
+                                                List<ClockinoutLogsRecord>>(
+                                              stream:
+                                                  queryClockinoutLogsRecord(),
+                                              builder: (context, snapshot) {
+                                                // Customize what your widget looks like when it's loading.
+                                                if (!snapshot.hasData) {
+                                                  return Center(
+                                                    child: SizedBox(
+                                                      width: 50,
+                                                      height: 50,
+                                                      child:
+                                                          CircularProgressIndicator(
+                                                        color: FlutterFlowTheme
+                                                            .primaryColor,
+                                                      ),
+                                                    ),
+                                                  );
+                                                }
+                                                List<ClockinoutLogsRecord>
+                                                    textClockinoutLogsRecordList =
+                                                    snapshot.data;
+                                                return Text(
+                                                  dateTimeFormat(
+                                                      'Hm',
+                                                      listViewClockinoutLogsRecord
+                                                          .clockin),
+                                                  textAlign: TextAlign.end,
+                                                  style: FlutterFlowTheme
+                                                      .bodyText1
+                                                      .override(
+                                                    fontFamily: 'Arimo',
+                                                    color: FlutterFlowTheme
+                                                        .tertiaryColor,
+                                                  ),
+                                                );
+                                              },
                                             ),
-                                          ),
-                                        );
-                                      }
-                                      List<ClockinoutLogsRecord>
-                                          textClockinoutLogsRecordList =
-                                          snapshot.data;
-                                      // Return an empty Container when the document does not exist.
-                                      if (snapshot.data.isEmpty) {
-                                        return Container();
-                                      }
-                                      final textClockinoutLogsRecord =
-                                          textClockinoutLogsRecordList
-                                                  .isNotEmpty
-                                              ? textClockinoutLogsRecordList
-                                                  .first
-                                              : null;
-                                      return Text(
-                                        dateTimeFormat('Md',
-                                            textClockinoutLogsRecord.clockin),
-                                        style: FlutterFlowTheme.bodyText1,
-                                      );
-                                    },
-                                  ),
-                                ),
-                                Align(
-                                  alignment: AlignmentDirectional(1, 0),
-                                  child: Container(
-                                    width:
-                                        MediaQuery.of(context).size.width * 0.8,
-                                    height: 60,
-                                    decoration: BoxDecoration(
-                                      color: FlutterFlowTheme.dkGray,
-                                      borderRadius: BorderRadius.only(
-                                        bottomLeft: Radius.circular(30),
-                                        bottomRight: Radius.circular(0),
-                                        topLeft: Radius.circular(30),
-                                        topRight: Radius.circular(0),
+                                          )
+                                        ],
                                       ),
                                     ),
-                                    child: Stack(
-                                      children: [
-                                        Padding(
-                                          padding:
-                                              EdgeInsetsDirectional.fromSTEB(
-                                                  20, 20, 0, 0),
-                                          child: StreamBuilder<
-                                              List<ClockinoutLogsRecord>>(
-                                            stream: queryClockinoutLogsRecord(
-                                              singleRecord: true,
-                                            ),
-                                            builder: (context, snapshot) {
-                                              // Customize what your widget looks like when it's loading.
-                                              if (!snapshot.hasData) {
-                                                return Center(
-                                                  child: SizedBox(
-                                                    width: 50,
-                                                    height: 50,
-                                                    child:
-                                                        CircularProgressIndicator(
-                                                      color: FlutterFlowTheme
-                                                          .primaryColor,
-                                                    ),
-                                                  ),
-                                                );
-                                              }
-                                              List<ClockinoutLogsRecord>
-                                                  textClockinoutLogsRecordList =
-                                                  snapshot.data;
-                                              // Return an empty Container when the document does not exist.
-                                              if (snapshot.data.isEmpty) {
-                                                return Container();
-                                              }
-                                              final textClockinoutLogsRecord =
-                                                  textClockinoutLogsRecordList
-                                                          .isNotEmpty
-                                                      ? textClockinoutLogsRecordList
-                                                          .first
-                                                      : null;
-                                              return Text(
-                                                '${dateTimeFormat('jm', textClockinoutLogsRecord.clockin)} - ${dateTimeFormat('jm', textClockinoutLogsRecord.clockout)}',
-                                                style: FlutterFlowTheme
-                                                    .bodyText1
-                                                    .override(
-                                                  fontFamily: 'Arimo',
-                                                  color: FlutterFlowTheme
-                                                      .tertiaryColor,
-                                                ),
-                                              );
-                                            },
-                                          ),
-                                        ),
-                                        Padding(
-                                          padding:
-                                              EdgeInsetsDirectional.fromSTEB(
-                                                  200, 20, 0, 0),
-                                          child: StreamBuilder<
-                                              List<ClockinoutLogsRecord>>(
-                                            stream: queryClockinoutLogsRecord(
-                                              singleRecord: true,
-                                            ),
-                                            builder: (context, snapshot) {
-                                              // Customize what your widget looks like when it's loading.
-                                              if (!snapshot.hasData) {
-                                                return Center(
-                                                  child: SizedBox(
-                                                    width: 50,
-                                                    height: 50,
-                                                    child:
-                                                        CircularProgressIndicator(
-                                                      color: FlutterFlowTheme
-                                                          .primaryColor,
-                                                    ),
-                                                  ),
-                                                );
-                                              }
-                                              List<ClockinoutLogsRecord>
-                                                  textClockinoutLogsRecordList =
-                                                  snapshot.data;
-                                              // Return an empty Container when the document does not exist.
-                                              if (snapshot.data.isEmpty) {
-                                                return Container();
-                                              }
-                                              final textClockinoutLogsRecord =
-                                                  textClockinoutLogsRecordList
-                                                          .isNotEmpty
-                                                      ? textClockinoutLogsRecordList
-                                                          .first
-                                                      : null;
-                                              return Text(
-                                                dateTimeFormat(
-                                                    'jm',
-                                                    textClockinoutLogsRecord
-                                                        .clockin),
-                                                textAlign: TextAlign.end,
-                                                style: FlutterFlowTheme
-                                                    .bodyText1
-                                                    .override(
-                                                  fontFamily: 'Arimo',
-                                                  color: FlutterFlowTheme
-                                                      .tertiaryColor,
-                                                ),
-                                              );
-                                            },
-                                          ),
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                )
-                              ],
+                                  )
+                                ],
+                              ),
                             ),
                           ),
                         ),
