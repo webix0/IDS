@@ -65,6 +65,10 @@ abstract class ClockinoutLogsRecord
       .snapshots()
       .map((s) => serializers.deserializeWith(serializer, serializedData(s)));
 
+  static Future<ClockinoutLogsRecord> getDocumentOnce(DocumentReference ref) =>
+      ref.get().then(
+          (s) => serializers.deserializeWith(serializer, serializedData(s)));
+
   ClockinoutLogsRecord._();
   factory ClockinoutLogsRecord(
           [void Function(ClockinoutLogsRecordBuilder) updates]) =

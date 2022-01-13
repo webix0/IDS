@@ -1,6 +1,6 @@
 {
-    "name": "i_d_s_ff",
-    "short_name": "i_d_s_ff",
+    "name": "IDS-ff",
+    "short_name": "IDS-ff",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

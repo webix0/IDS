@@ -5,7 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class OnboardingWidget extends StatefulWidget {
-  OnboardingWidget({Key key}) : super(key: key);
+  const OnboardingWidget({Key key}) : super(key: key);
 
   @override
   _OnboardingWidgetState createState() => _OnboardingWidgetState();
@@ -59,7 +59,7 @@ class _OnboardingWidgetState extends State<OnboardingWidget> {
                                         height: 400,
                                         fit: BoxFit.fitWidth,
                                       ),
-                                    )
+                                    ),
                                   ],
                                 ),
                                 Padding(
@@ -76,7 +76,7 @@ class _OnboardingWidgetState extends State<OnboardingWidget> {
                                           fontSize: 32,
                                           fontWeight: FontWeight.bold,
                                         ),
-                                      )
+                                      ),
                                     ],
                                   ),
                                 ),
@@ -97,7 +97,7 @@ class _OnboardingWidgetState extends State<OnboardingWidget> {
                                             fontWeight: FontWeight.w500,
                                           ),
                                         ),
-                                      )
+                                      ),
                                     ],
                                   ),
                                 ),
@@ -108,7 +108,7 @@ class _OnboardingWidgetState extends State<OnboardingWidget> {
                                     mainAxisSize: MainAxisSize.max,
                                     children: [],
                                   ),
-                                )
+                                ),
                               ],
                             ),
                           ),
@@ -135,7 +135,7 @@ class _OnboardingWidgetState extends State<OnboardingWidget> {
                                         height: 400,
                                         fit: BoxFit.fitWidth,
                                       ),
-                                    )
+                                    ),
                                   ],
                                 ),
                                 Padding(
@@ -152,7 +152,7 @@ class _OnboardingWidgetState extends State<OnboardingWidget> {
                                           fontSize: 32,
                                           fontWeight: FontWeight.bold,
                                         ),
-                                      )
+                                      ),
                                     ],
                                   ),
                                 ),
@@ -173,7 +173,7 @@ class _OnboardingWidgetState extends State<OnboardingWidget> {
                                             fontWeight: FontWeight.w500,
                                           ),
                                         ),
-                                      )
+                                      ),
                                     ],
                                   ),
                                 ),
@@ -184,7 +184,7 @@ class _OnboardingWidgetState extends State<OnboardingWidget> {
                                     mainAxisSize: MainAxisSize.max,
                                     children: [],
                                   ),
-                                )
+                                ),
                               ],
                             ),
                           ),
@@ -211,7 +211,7 @@ class _OnboardingWidgetState extends State<OnboardingWidget> {
                                         height: 400,
                                         fit: BoxFit.fitWidth,
                                       ),
-                                    )
+                                    ),
                                   ],
                                 ),
                                 Padding(
@@ -228,7 +228,7 @@ class _OnboardingWidgetState extends State<OnboardingWidget> {
                                           fontSize: 32,
                                           fontWeight: FontWeight.bold,
                                         ),
-                                      )
+                                      ),
                                     ],
                                   ),
                                 ),
@@ -249,7 +249,7 @@ class _OnboardingWidgetState extends State<OnboardingWidget> {
                                             fontWeight: FontWeight.normal,
                                           ),
                                         ),
-                                      )
+                                      ),
                                     ],
                                   ),
                                 ),
@@ -260,10 +260,10 @@ class _OnboardingWidgetState extends State<OnboardingWidget> {
                                     mainAxisSize: MainAxisSize.max,
                                     children: [],
                                   ),
-                                )
+                                ),
                               ],
                             ),
-                          )
+                          ),
                         ],
                       ),
                       Align(
@@ -298,9 +298,9 @@ class _OnboardingWidgetState extends State<OnboardingWidget> {
                     ],
                   ),
                 ),
-              )
+              ),
             ],
-          )
+          ),
         ],
       ),
     );

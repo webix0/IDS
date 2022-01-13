@@ -6,7 +6,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class TimeRecordsWidget extends StatefulWidget {
-  TimeRecordsWidget({Key key}) : super(key: key);
+  const TimeRecordsWidget({Key key}) : super(key: key);
 
   @override
   _TimeRecordsWidgetState createState() => _TimeRecordsWidgetState();
@@ -79,12 +79,12 @@ class _TimeRecordsWidgetState extends State<TimeRecordsWidget> {
                                     fontSize: 22,
                                   ),
                                 ),
-                              )
+                              ),
                             ],
                           ),
                         ),
                       ),
-                    )
+                    ),
                   ],
                 ),
               ),
@@ -153,17 +153,17 @@ class _TimeRecordsWidgetState extends State<TimeRecordsWidget> {
                                       fontSize: 22,
                                     ),
                                   ),
-                                )
+                                ),
                               ],
                             ),
                           ),
                         ),
                       ),
-                    )
+                    ),
                   ],
                 ),
               ),
-            )
+            ),
           ],
         ),
       ),

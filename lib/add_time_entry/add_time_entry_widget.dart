@@ -10,7 +10,7 @@ import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class AddTimeEntryWidget extends StatefulWidget {
-  AddTimeEntryWidget({Key key}) : super(key: key);
+  const AddTimeEntryWidget({Key key}) : super(key: key);
 
   @override
   _AddTimeEntryWidgetState createState() => _AddTimeEntryWidgetState();
@@ -20,12 +20,27 @@ class _AddTimeEntryWidgetState extends State<AddTimeEntryWidget>
     with TickerProviderStateMixin {
   DateTime datePicked1;
   DateTime datePicked2;
-  bool _loadingButton = false;
   final scaffoldKey = GlobalKey<ScaffoldState>();
   final animationsMap = {
-    'containerOnActionTriggerAnimation': AnimationInfo(
+    'containerOnActionTriggerAnimation1': AnimationInfo(
       trigger: AnimationTrigger.onActionTrigger,
       duration: 600,
+      initialState: AnimationState(
+        opacity: 0,
+      ),
+      finalState: AnimationState(
+        opacity: 1,
+      ),
+    ),
+    'containerOnActionTriggerAnimation2': AnimationInfo(
+      trigger: AnimationTrigger.onActionTrigger,
+      duration: 600,
+      initialState: AnimationState(
+        opacity: 0,
+      ),
+      finalState: AnimationState(
+        opacity: 1,
+      ),
     ),
   };
 
@@ -68,7 +83,7 @@ class _AddTimeEntryWidgetState extends State<AddTimeEntryWidget>
                               color: Color(0xFF0D1724),
                               fontWeight: FontWeight.w500,
                             ),
-                          )
+                          ),
                         ],
                       ),
                     ),
@@ -90,96 +105,146 @@ class _AddTimeEntryWidgetState extends State<AddTimeEntryWidget>
                               ),
                               child: Row(
                                 mainAxisSize: MainAxisSize.max,
-                                mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Padding(
                                     padding: EdgeInsetsDirectional.fromSTEB(
-                                        0, 0, 30, 0),
-                                    child: Column(
+                                        9, 0, 0, 0),
+                                    child: Row(
                                       mainAxisSize: MainAxisSize.max,
                                       mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
+                                          MainAxisAlignment.center,
                                       children: [
-                                        Padding(
-                                          padding:
-                                              EdgeInsetsDirectional.fromSTEB(
-                                                  0, 5, 0, 0),
-                                          child: Text(
-                                            dateTimeFormat('EEEE', datePicked1),
-                                            style: FlutterFlowTheme.bodyText2
-                                                .override(
-                                              fontFamily: 'EB Garamond',
-                                              fontWeight: FontWeight.w300,
+                                        Align(
+                                          alignment:
+                                              AlignmentDirectional(-1, 0),
+                                          child: Padding(
+                                            padding:
+                                                EdgeInsetsDirectional.fromSTEB(
+                                                    0, 0, 30, 0),
+                                            child: Column(
+                                              mainAxisSize: MainAxisSize.max,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Padding(
+                                                  padding: EdgeInsetsDirectional
+                                                      .fromSTEB(0, 5, 0, 0),
+                                                  child: Text(
+                                                    dateTimeFormat(
+                                                        'EEEE', datePicked1),
+                                                    style: FlutterFlowTheme
+                                                        .bodyText2
+                                                        .override(
+                                                      fontFamily: 'EB Garamond',
+                                                      fontWeight:
+                                                          FontWeight.w300,
+                                                    ),
+                                                  ),
+                                                ),
+                                                Padding(
+                                                  padding: EdgeInsetsDirectional
+                                                      .fromSTEB(0, 10, 0, 0),
+                                                  child: Text(
+                                                    dateTimeFormat('M/d h:m a',
+                                                        datePicked1),
+                                                    style: FlutterFlowTheme
+                                                        .bodyText1
+                                                        .override(
+                                                      fontFamily: 'Arimo',
+                                                      color:
+                                                          FlutterFlowTheme.blue,
+                                                      fontSize: 20,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
                                             ),
                                           ),
                                         ),
-                                        Padding(
-                                          padding:
-                                              EdgeInsetsDirectional.fromSTEB(
-                                                  0, 10, 0, 0),
-                                          child: Text(
-                                            dateTimeFormat(
-                                                'M/d h:m a', datePicked1),
-                                            style: FlutterFlowTheme.bodyText1
-                                                .override(
-                                              fontFamily: 'Arimo',
-                                              color: FlutterFlowTheme.blue,
-                                              fontSize: 20,
-                                            ),
-                                          ),
-                                        )
                                       ],
                                     ),
                                   ),
-                                  Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(
-                                        30, 0, 0, 0),
-                                    child: Column(
-                                      mainAxisSize: MainAxisSize.max,
-                                      mainAxisAlignment: MainAxisAlignment.end,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.end,
-                                      children: [
-                                        Padding(
-                                          padding:
-                                              EdgeInsetsDirectional.fromSTEB(
-                                                  0, 5, 0, 0),
-                                          child: Text(
-                                            dateTimeFormat('EEEE', datePicked2),
-                                            style: FlutterFlowTheme.bodyText2
-                                                .override(
-                                              fontFamily: 'EB Garamond',
-                                              fontSize: 13,
-                                              fontWeight: FontWeight.w300,
-                                            ),
-                                          ),
-                                        ),
-                                        Padding(
-                                          padding:
-                                              EdgeInsetsDirectional.fromSTEB(
-                                                  0, 10, 0, 0),
-                                          child: Text(
-                                            dateTimeFormat(
-                                                'M/d h:m a', datePicked2),
-                                            style: FlutterFlowTheme.bodyText1
-                                                .override(
-                                              fontFamily: 'Arimo',
-                                              color: FlutterFlowTheme.blue,
-                                              fontSize: 20,
-                                            ),
-                                          ),
-                                        )
-                                      ],
-                                    ),
-                                  )
                                 ],
                               ),
                             ).animated([
-                              animationsMap['containerOnActionTriggerAnimation']
+                              animationsMap[
+                                  'containerOnActionTriggerAnimation1']
                             ]),
-                          )
+                          ),
+                          Expanded(
+                            child: Container(
+                              width: 150,
+                              height: 60,
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(8),
+                                border: Border.all(
+                                  color: Color(0xFFE6E6E6),
+                                ),
+                              ),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.max,
+                                children: [
+                                  Row(
+                                    mainAxisSize: MainAxisSize.max,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      Align(
+                                        alignment: AlignmentDirectional(1, 0),
+                                        child: Padding(
+                                          padding:
+                                              EdgeInsetsDirectional.fromSTEB(
+                                                  55, 0, 0, 0),
+                                          child: Column(
+                                            mainAxisSize: MainAxisSize.max,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.end,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.end,
+                                            children: [
+                                              Padding(
+                                                padding: EdgeInsetsDirectional
+                                                    .fromSTEB(0, 0, 0, 9),
+                                                child: Text(
+                                                  dateTimeFormat(
+                                                      'EEEE', datePicked2),
+                                                  style: FlutterFlowTheme
+                                                      .bodyText2
+                                                      .override(
+                                                    fontFamily: 'EB Garamond',
+                                                    fontSize: 14,
+                                                    fontWeight: FontWeight.w300,
+                                                  ),
+                                                ),
+                                              ),
+                                              Text(
+                                                dateTimeFormat(
+                                                    'M/d h:m a', datePicked2),
+                                                style: FlutterFlowTheme
+                                                    .bodyText1
+                                                    .override(
+                                                  fontFamily: 'Arimo',
+                                                  color: FlutterFlowTheme.blue,
+                                                  fontSize: 20,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ).animated([
+                              animationsMap[
+                                  'containerOnActionTriggerAnimation2']
+                            ]),
+                          ),
                         ],
                       ),
                     ),
@@ -258,7 +323,7 @@ class _AddTimeEntryWidgetState extends State<AddTimeEntryWidget>
                               ),
                             ),
                           ),
-                        )
+                        ),
                       ],
                     ),
                     Align(
@@ -267,23 +332,18 @@ class _AddTimeEntryWidgetState extends State<AddTimeEntryWidget>
                         padding: EdgeInsetsDirectional.fromSTEB(0, 16, 0, 0),
                         child: FFButtonWidget(
                           onPressed: () async {
-                            setState(() => _loadingButton = true);
-                            try {
-                              final clockinoutLogsCreateData =
-                                  createClockinoutLogsRecordData(
-                                clockin: datePicked1,
-                                clockout: datePicked2,
-                                createdTime: getCurrentTimestamp,
-                                employeeName: currentUserDisplayName,
-                                employeeID: currentUserDisplayName,
-                                phoneNumber: currentPhoneNumber,
-                              );
-                              await ClockinoutLogsRecord.collection
-                                  .doc()
-                                  .set(clockinoutLogsCreateData);
-                            } finally {
-                              setState(() => _loadingButton = false);
-                            }
+                            final clockinoutLogsCreateData =
+                                createClockinoutLogsRecordData(
+                              clockin: datePicked1,
+                              clockout: datePicked2,
+                              createdTime: getCurrentTimestamp,
+                              employeeName: currentUserDisplayName,
+                              employeeID: currentUserDisplayName,
+                              phoneNumber: currentPhoneNumber,
+                            );
+                            await ClockinoutLogsRecord.collection
+                                .doc()
+                                .set(clockinoutLogsCreateData);
                           },
                           text: 'Add Entry',
                           options: FFButtonOptions(
@@ -303,10 +363,9 @@ class _AddTimeEntryWidgetState extends State<AddTimeEntryWidget>
                             ),
                             borderRadius: 8,
                           ),
-                          loading: _loadingButton,
                         ),
                       ),
-                    )
+                    ),
                   ],
                 ),
               ),
@@ -531,11 +590,11 @@ class _AddTimeEntryWidgetState extends State<AddTimeEntryWidget>
                                                   );
                                                 },
                                               ),
-                                            )
+                                            ),
                                           ],
                                         ),
                                       ),
-                                    )
+                                    ),
                                   ],
                                 ),
                               ),
@@ -547,7 +606,7 @@ class _AddTimeEntryWidgetState extends State<AddTimeEntryWidget>
                   },
                 ),
               ),
-            )
+            ),
           ],
         ),
       ),

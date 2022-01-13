@@ -15,6 +15,7 @@ class FlutterFlowTheme {
   static const Color taco = Color(0xFFE8B962);
   static const Color lazer = Color(0xFF1DF236);
   static const Color congo = Color(0xFF5D3D3D);
+  static const Color white = Color(0xFFFFFFFF);
 
   String primaryFontFamily = 'Poppins';
   String secondaryFontFamily = 'Roboto';
@@ -70,6 +71,7 @@ extension TextStyleHelper on TextStyle {
     FontWeight fontWeight,
     FontStyle fontStyle,
     bool useGoogleFonts = true,
+    double lineHeight,
   }) =>
       useGoogleFonts
           ? GoogleFonts.getFont(
@@ -78,6 +80,7 @@ extension TextStyleHelper on TextStyle {
               fontSize: fontSize ?? this.fontSize,
               fontWeight: fontWeight ?? this.fontWeight,
               fontStyle: fontStyle ?? this.fontStyle,
+              height: lineHeight,
             )
           : copyWith(
               fontFamily: fontFamily,
@@ -85,5 +88,6 @@ extension TextStyleHelper on TextStyle {
               fontSize: fontSize,
               fontWeight: fontWeight,
               fontStyle: fontStyle,
+              height: lineHeight,
             );
 }

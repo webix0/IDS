@@ -2,13 +2,14 @@ import '../auth/auth_util.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import '../flutter_flow/flutter_flow_widgets.dart';
-import '../home_page/home_page_widget.dart';
+import '../main.dart';
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class LoginWidget extends StatefulWidget {
-  LoginWidget({Key key}) : super(key: key);
+  const LoginWidget({Key key}) : super(key: key);
 
   @override
   _LoginWidgetState createState() => _LoginWidgetState();
@@ -18,8 +19,6 @@ class _LoginWidgetState extends State<LoginWidget> {
   TextEditingController emailAddressController;
   TextEditingController passwordController;
   bool passwordVisibility;
-  bool _loadingButton1 = false;
-  bool _loadingButton2 = false;
   final formKey = GlobalKey<FormState>();
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -66,7 +65,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                             height: 100,
                             fit: BoxFit.cover,
                           ),
-                        )
+                        ),
                       ],
                     ),
                   ),
@@ -97,7 +96,11 @@ class _LoginWidgetState extends State<LoginWidget> {
                       children: [
                         Expanded(
                           child: TextFormField(
-                            onChanged: (_) => setState(() {}),
+                            onChanged: (_) => EasyDebounce.debounce(
+                              'emailAddressController',
+                              Duration(milliseconds: 2000),
+                              () => setState(() {}),
+                            ),
                             onFieldSubmitted: (_) async {
                               if (!formKey.currentState.validate()) {
                                 return;
@@ -181,7 +184,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                               return null;
                             },
                           ),
-                        )
+                        ),
                       ],
                     ),
                   ),
@@ -249,7 +252,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                               fontWeight: FontWeight.normal,
                             ),
                           ),
-                        )
+                        ),
                       ],
                     ),
                   ),
@@ -261,29 +264,25 @@ class _LoginWidgetState extends State<LoginWidget> {
                       children: [
                         FFButtonWidget(
                           onPressed: () async {
-                            setState(() => _loadingButton1 = true);
-                            try {
-                              if (!formKey.currentState.validate()) {
-                                return;
-                              }
-                              final user = await signInWithEmail(
-                                context,
-                                emailAddressController.text,
-                                passwordController.text,
-                              );
-                              if (user == null) {
-                                return;
-                              }
-
-                              await Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => HomePageWidget(),
-                                ),
-                              );
-                            } finally {
-                              setState(() => _loadingButton1 = false);
+                            if (!formKey.currentState.validate()) {
+                              return;
                             }
+                            final user = await signInWithEmail(
+                              context,
+                              emailAddressController.text,
+                              passwordController.text,
+                            );
+                            if (user == null) {
+                              return;
+                            }
+
+                            await Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    NavBarPage(initialPage: 'HomePage'),
+                              ),
+                            );
                           },
                           text: 'Login',
                           options: FFButtonOptions(
@@ -303,7 +302,6 @@ class _LoginWidgetState extends State<LoginWidget> {
                             ),
                             borderRadius: 8,
                           ),
-                          loading: _loadingButton1,
                         ),
                         FFButtonWidget(
                           onPressed: () {
@@ -327,8 +325,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                             ),
                             borderRadius: 0,
                           ),
-                          loading: _loadingButton2,
-                        )
+                        ),
                       ],
                     ),
                   ),
@@ -347,7 +344,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                             fontSize: 14,
                             fontWeight: FontWeight.bold,
                           ),
-                        )
+                        ),
                       ],
                     ),
                   ),
@@ -369,14 +366,14 @@ class _LoginWidgetState extends State<LoginWidget> {
                             fontSize: 14,
                             fontWeight: FontWeight.normal,
                           ),
-                        )
+                        ),
                       ],
                     ),
                   ),
                   Text(
                     'Ideal Delivery Services LLC',
                     style: FlutterFlowTheme.title2,
-                  )
+                  ),
                 ],
               ),
             ),

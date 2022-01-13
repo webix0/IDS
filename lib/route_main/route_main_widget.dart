@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class RouteMainWidget extends StatefulWidget {
-  RouteMainWidget({Key key}) : super(key: key);
+  const RouteMainWidget({Key key}) : super(key: key);
 
   @override
   _RouteMainWidgetState createState() => _RouteMainWidgetState();
@@ -72,12 +72,12 @@ class _RouteMainWidgetState extends State<RouteMainWidget> {
                               fontSize: 22,
                             ),
                           ),
-                        )
+                        ),
                       ],
                     ),
                   ),
                 ),
-              )
+              ),
             ],
           ),
         ),

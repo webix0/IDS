@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'serialization_util.dart';
 import '../backend.dart';
 import '../../flutter_flow/flutter_flow_theme.dart';
 import '../../flutter_flow/flutter_flow_util.dart';
@@ -8,11 +9,11 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 
 import '../../main.dart';
-import '../../home_page/home_page_widget.dart';
 import '../../onboarding/onboarding_widget.dart';
 import '../../route_main/route_main_widget.dart';
 import '../../time_records/time_records_widget.dart';
 import '../../add_time_entry/add_time_entry_widget.dart';
+import '../../chat/chat_widget.dart';
 
 class PushNotificationsHandler extends StatefulWidget {
   const PushNotificationsHandler(
@@ -79,11 +80,17 @@ class _PushNotificationsHandlerState extends State<PushNotificationsHandler> {
 }
 
 final pageBuilderMap = <String, Future<Widget> Function(Map<String, dynamic>)>{
-  'HomePage': (data) async => HomePageWidget(),
+  'HomePage': (data) async => NavBarPage(initialPage: 'HomePageWidget'),
   'Onboarding': (data) async => OnboardingWidget(),
   'RouteMain': (data) async => RouteMainWidget(),
   'TimeRecords': (data) async => TimeRecordsWidget(),
   'AddTimeEntry': (data) async => AddTimeEntryWidget(),
+  'chat': (data) async => ChatWidget(
+        chatUser: await getDocumentParameter(
+            data, 'chatUser', UsersRecord.serializer),
+        chatRef: getParameter(data, 'chatRef'),
+      ),
+  'all_chats': (data) async => NavBarPage(initialPage: 'AllChatsWidget'),
 };
 
 bool hasMatchingParameters(Map<String, dynamic> data, Set<String> params) =>
@@ -97,67 +104,9 @@ Map<String, dynamic> getInitialParameterData(Map<String, dynamic> data) {
         parameterDataStr.isEmpty) {
       return {};
     }
-    return json.decode(parameterDataStr) as Map<String, dynamic>;
+    return jsonDecode(parameterDataStr) as Map<String, dynamic>;
   } catch (e) {
     print('Error parsing parameter data: $e');
     return {};
   }
-}
-
-T getParameter<T>(Map<String, dynamic> data, String paramName) {
-  try {
-    if (!data.containsKey(paramName)) {
-      return null;
-    }
-    final param = data[paramName];
-    switch (T) {
-      case String:
-        return param;
-      case double:
-        return param.toDouble();
-      case DateTime:
-        return DateTime.fromMillisecondsSinceEpoch(param) as T;
-      case LatLng:
-        return latLngFromString(param) as T;
-    }
-    if (param is String) {
-      return FirebaseFirestore.instance.doc(param) as T;
-    }
-    return param;
-  } catch (e) {
-    print('Error parsing parameter "$paramName": $e');
-    return null;
-  }
-}
-
-Future<T> getDocumentParameter<T>(
-    Map<String, dynamic> data, String paramName, Serializer<T> serializer) {
-  if (!data.containsKey(paramName)) {
-    return null;
-  }
-  return FirebaseFirestore.instance
-      .doc(data[paramName])
-      .get()
-      .then((s) => serializers.deserializeWith(serializer, serializedData(s)));
-}
-
-final latRegex = RegExp(
-    r'^(+|-)?(?:90(?:(?:.0{1,7})?)|(?:[0-9]|[1-8][0-9])(?:(?:.[0-9]{1,7})?))$');
-final lngRegex = RegExp(
-    r'^(+|-)?(?:180(?:(?:.0{1,7})?)|(?:[0-9]|[1-9][0-9]|1[0-7][0-9])(?:(?:.[0-9]{1,7})?))$');
-
-LatLng latLngFromString(String latLngStr) {
-  final pieces = latLngStr.split(',');
-  if (pieces.length != 2) {
-    return null;
-  }
-  final lat = pieces[0].trim();
-  final lng = pieces[1].trim();
-  if (!latRegex.hasMatch(lat)) {
-    return null;
-  }
-  if (!lngRegex.hasMatch(lng)) {
-    return null;
-  }
-  return LatLng(double.parse(lat), double.parse(lng));
 }
